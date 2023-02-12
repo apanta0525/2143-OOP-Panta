@@ -1,7 +1,6 @@
 ## Ashish Panta
 #### Repo: 2143 Object Oriented Repo
 #### Email: liverpool.ashish.ap@gmail.com
-#### Website: https://en.wikipedia.org/wiki/Albert_Einstein
 #### Image:
 ![Ashish Panta](https://user-images.githubusercontent.com/112501963/191314191-e1b6a568-f3bd-48c3-af32-18d648425d8a.jpg)
 ### Avatar:
