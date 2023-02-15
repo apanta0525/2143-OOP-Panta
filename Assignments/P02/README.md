@@ -1,5 +1,5 @@
 
-## A04 - Program 02 - MyVectorClass
+## A04 - Program 02 - MyVector Class
 ### Aashish Panta 
 ### Description:
 
