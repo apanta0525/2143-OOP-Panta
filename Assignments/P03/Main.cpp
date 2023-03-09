@@ -20,7 +20,6 @@
  *
  *  Files:
  *       main.cpp    : driver program
- *       output.txt    : output file with results
  *****************************************************************************/
 
 #include <fstream>
