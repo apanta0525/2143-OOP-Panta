@@ -1,0 +1,11 @@
+digraph LL {
+        rankdir=LR;
+        node [shape=record,color=purple];
+        1 [label="{ <data> 10 | <next>  }"]
+        2 [label="{ <data> 88 | <next>  }"];
+        3 [label="{ <data> 31 | <next>  }"];
+        null [shape=circle,color=white];
+        1:next:3 -> 2:data [arrowhead=vee, arrowtail=dot, color=red, dir=one, tailclip=false];
+        2:next:3 -> 3:data [arrowhead=vee, arrowtail=dot, color=orange, dir=both, tailclip=false];
+        3:next:3 -> null  [arrowhead=vee, arrowtail=dot, color=orange, dir=none, tailclip=false];
+}
