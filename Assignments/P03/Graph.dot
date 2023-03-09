@@ -1,8 +1,0 @@
-digraph G {
-  rankdir=LR
-  node [shape=box, color=blue, shape=ellipse]
-  n1 [style=filled] 
-  n2 [style=filled, fillcolor=yellow, shape=circle] 
-  n3 [style=filled, fillcolor=red, shape=box] 
-  n0 -> n1 -> n2 -> n3
-}
