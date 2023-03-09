@@ -10,7 +10,7 @@ A class that will generate graphviz "dot" syntax so you can visualize the output
 | :---: | -------- | -------------------------------- |
 |   1   | [Main.cpp](https://github.com/apanta0525/2143-OOP-Panta/blob/main/Assignments/P03/Main.cpp) | Main driver of my program. |
 | 2 | [Banner.txt](https://github.com/apanta0525/2143-OOP-Panta/blob/main/Assignments/P03/Banner.txt) | Banner File |
-| 3 | [test.out](https://github.com/apanta0525/2143-OOP-Panta/blob/main/Assignments/P03/Banner.txt) | Output File |
+| 3 | [test.out](https://github.com/apanta0525/2143-OOP-Panta/blob/main/Assignments/P03/test.out) | Output File |
 
 ### Instructions
 
