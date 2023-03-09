@@ -1,0 +1,20 @@
+PANTA
+March 09, 2023
+SPRING 2143
+
+digraph graphiz {
+  rankdir=LR
+  bgcolor= "grey" 
+  label = "Graphical Representation" 
+  node [shape = record ,color = black]
+  1 [label="1", shape="circle", color="red"];
+  2 [label="2", shape="ellipse", color="blue"];
+  3 [label="3", shape="diamond", color="green"];
+  4 [label="4", shape="triangle", color="yellow"];
+  null [arrowhead =normal,arrowtail =none,color =black,dir=none]
+  1-> 2 [arrowhead =vee,arrowtail =vee,color = "red" ,dir=both];
+  2-> 3 [arrowhead =diamond,arrowtail =diamond,color = "blue" ,dir=one];
+  3-> 4 [arrowhead =curve,arrowtail =curve,color = "green" ,dir=both];
+  4-> null [arrowhead = normal , arrowtail = none , color = "black" , dir = none ];
+}
+
