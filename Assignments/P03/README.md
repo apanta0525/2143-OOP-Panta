@@ -2,7 +2,7 @@
 ### Aashish Panta 
 ### Description:
 
-a class that will generate graphviz "dot" syntax so you can visualize the output of your data structures. Graphviz is used for "graph visualization" and provides a simple way to visualize linked data structures.
+A class that will generate graphviz "dot" syntax so you can visualize the output of your data structures. Graphviz is used for "graph visualization" and provides a simple way to visualize linked data structures.
 
 ### Files
 
