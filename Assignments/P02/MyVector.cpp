@@ -1,393 +1,772 @@
-/*****************************************************************************
-*                    
-*  Author:           Aashish Panta
-*  Email:            liverpool.ashish.ap@gmail.com
-*  Label:            P02
-*  Title:            Commenting Code
-*  Course:           CMPS 2143
-*  Semester:         Spring 2023
-* 
-*  Description:
-*        Uses a singly linked list as the backend for an STL like "vector" 
-*        class definition.
-* 
-*  Usage:
-*        Use it like a linked list now. More like a vector next program
-* 
-*  Files: TBD
-*****************************************************************************/
+/*****************************************************************
+ *
+ *  Author:           Aashish Panta
+ *  Email:            liverpool.ashish.ap@gmail.com
+ *  Label:            P02
+ *  Title:            My Vector Class 2
+ *  Course:           CMPS 2143
+ *  Semester:         Spring 2023
+ *
+ *  Description:
+ *       This program implements a class that allows a linked list to add and remove nodes with data
+ *values, search existing nodes' values for a specific value, and it can be
+ *sorted in ascending numerical order.  It also has print functionality to
+ *display the linked list similarly to an array.
+ *
+ *  Usage:
+ *       N/A
+ *
+ *  Files:
+ *       main.cpp    : driver program
+ *       output.txt    : output file with results
+ *****************************************************************************/
+
 #include <fstream>
 #include <iostream>
 #include <string>
-
-#define INF 1000000000  // infinity
-
 using namespace std;
 
-// Node for our linked list
-struct Node {
-    int data;
+#define INF 1000000000 // infinity
+struct Node {          // node for our linked list
+  int data;
+  Node *next;
 
-    Node* next;
-
-    Node(int x) {
-        data = x;
-        next = NULL;
-    }
+  // constructor
+  Node(int num) {
+    data = num;
+    next = nullptr;
+  }
 };
 
 /**
- * Class Name: MyVector
- * 
+ * Class MyVector
+ *
  * Description:
- *      This class creates, traverses, and manipulates a dynamically allocated list.
- * 
+ *            The class has tools to create a linked list. The values in linked
+ * list can be added from another vector, from an array. The class also has
+ * various methods like push and pop to add and remove items from the list as
+ * needed. The final output is written onto a output file named test.out.
+ *
+ *
  * Public Methods:
- *                          MyVector()    
- *                          MyVector(int A[], int aSize)
- *                          MyVector(string FileName) 
- *                          MyVector(const MyVector& other) 
- *                          ~MyVector()
- *      void                init()
- *                          inorderPush(int x)
- *                          sortList()
- *                          pushFront(int x)
- *                          pushFront(const MyVector& other)
- *                          pushRear(const MyVector& other)
- *                          pushRear(int x)
- *      bool                pushAt(int i, int x)
- * 
+ *                Vector()
+ *                Vector(int *A, int size)
+ *                Vector(string FileName)
+ *                Vector(const Vector &other)
+ *                void init()
+ *      void      inorderPush(int x)
+ *      void      sortList()
+ *      void      pushFront(int x)
+ *      void      pushFront(const Vector &other)
+ *      void      pushRear(int x)
+ *      void      pushRear(const Vector &other)
+ *      bool      pushAt(int i, int x)
+ *      int       popFront()
+ *      int       popRear()
+ *      int       popAt(int loc)
+ *      int       find(int val)
+ *
+ *
+ *
  * Private Methods:
- *      void                _inorderPush(int x)
- * 
- * Usage: 
- * 
- *      MyVector V1;                       // Create Que array and initialize size as 3
- *      V1.pushFront(56);                  // Push interger value onto the list at Front.
- *      V1.pushFront(42);                  // Push interger value onto the list at Front.
- *      V1.sortList();                     // sort of the list.
- *      V1.pushAt(3, 88);                  // Push interger value onto the list at specified postion.
- *      ~MyVector()                        // Removes the integer value of the list from the end.
+ *      void      _inorderPush(int x)
+ *
+ *
+ * Usage:
+ *      v1.pushFront(18);        pushes 18 in vector v1
+ *      v2.inorderPush(27);      pushes 27 in ordered vector v2
+ *
+ *
  */
 class MyVector {
 private:
-    Node*           head;       // head pointer of list
-    Node*           tail;       // tail pointer of list
-    int             size;       // size of list
-    static ofstream fout;
-    string          fileName;
-    bool            sorted;     // check the list is sorted or not.
+  Node *head; // base pointer of list
+  Node *tail; // to hold the address of the end of linked list
+  int size;   // holds the temporary size of the list
+  static ofstream fout;
+  string fileName;
+  bool sorted;
 
-    /**
-     * @brief Private version of inOrder push. 
-     * 
-     * @param x 
-     */
-    void _inorderPush(int x) {
-        Node* tempPtr = new Node(x);  // allocate new node
-        Node* prev = head;            // get previous and next pointers
-        Node* curr = head;
+  Node *_Find(int location) {
+    Node *travel = head;
+    int index = 0;
 
-        while (curr->data > x) {  // loop to find proper location
-            prev = curr;
-            curr = curr->next;
-        }
+    while (travel && location--) {
 
-        tempPtr->next = prev->next;  // add new node in its proper position
-        prev->next = tempPtr;
+      travel = travel->next;
+    }
+    return travel;
+  }
 
-        size++;  // add to size :)
+  void _inorderPush(int x) {
+    Node *tempPtr = new Node(x); // allocate new node
+    Node *prev = head;           // get previous and next pointers
+    Node *curr = head;
+
+    while (curr->data > x) { // loop to find proper location
+      prev = curr;
+      curr = curr->next;
     }
 
- public:
-    /**
-     * @brief Default constructor 
-     * 
-     */
-    MyVector() {
-        init();   // initialise the value
+    tempPtr->next = prev->next; // add new node in its proper position
+    prev->next = tempPtr;
+
+    size++; // add to size :)
+  }
+
+public:
+  /**
+   * Public : Vector
+   *
+   * Description:
+   *      default constructor of the vector class
+   *      creates and empty linked list
+   * Params:
+   *      none
+   *
+   * Returns:
+   *      -none
+   */
+  MyVector() { head = tail = nullptr; }
+
+  /**
+   * Public : Vector
+   *
+   * Description:
+   *     overloaded constructor of vector to initialize using array
+   *
+   * Params:
+   *      int* :array of integers
+   *      int :size of the array
+   * Returns:
+   *      -none
+   */
+  MyVector(int *A, int size) {
+    init();
+
+    for (int i = 0; i < size; i++) {
+      pushRear(A[i]);
+    }
+  }
+
+  /**
+   * Public : Vector
+   *
+   * Description:
+   *      overloaded constructor of vector to initialize using data from an
+   * input file. Reads data from the input file and adds it to the list
+   *
+   * Params:
+   *      string : name of the data file
+   * Returns:
+   *      none
+   */
+  MyVector(string FileName) {
+    init();
+
+    ifstream fin;
+    int x = 0;
+
+    fin.open(FileName);
+    while (!fin.eof()) {
+      fin >> x;
+      pushRear(x);
+    }
+  }
+
+  /**
+   * Public : Vector
+   *
+   * Description:
+   *      overloaded constructor of vector to initialize using another vector.
+   *
+   * Params:
+   *      Vector : address of the other vector to be copied.
+   *
+   * Returns:
+   *      none
+   */
+  MyVector(const MyVector &other) {
+    init();
+
+    Node *temp = other.head;
+
+    while (temp) {
+      pushRear(temp->data);
+      temp = temp->next;
+    }
+  }
+
+  /**
+   *   Initialize the data members so we don't
+   *   have duplicate lines in each constructor.
+   *
+   */
+  void init() {
+    head = tail = NULL;
+    fileName = "";
+    size = 0;
+    sorted = false;
+  }
+
+  /**
+   * Public : inorderPush
+   *
+   * Description:
+   *             The method pushes a given value in the list in correct order.
+   *             The method checks if the list is sorted if not it sorts it and
+   *              then inserts the value in correct place.
+   * Params:
+   *      int     : value to be inserted in the list
+   *
+   * Returns:
+   *      none
+   */
+
+  void inorderPush(int x) {
+    if (!sorted) {
+      sortList();
     }
 
-    /**
-     * @brief Overloaded Constructor 
-     * 
-     * @param int   *A - pointer to array 
-     * @param int   aSize - size of array
-     */
-    MyVector(int A[], int aSize) {
-        init();
+    if (!head) {
+      pushFront(x); // call push front for empty list
+    } else if (x < head->data) {
+      pushFront(x); // call push front if x is less than head
+    } else if (x > tail->data) {
+      pushRear(x); // call push rear if x > tail
+    } else {
+      _inorderPush(x); // call private version of push in order
+    }
+  }
 
-        for (int i = 0; i < aSize; i++) {
-            pushRear(A[i]);
+  /**
+   * Public : sortList
+   *
+   * Description:
+   *             The method sorts the list in proper order.
+   * Params:
+   *       none
+   *
+   * Returns:
+   *      none
+   */
+
+  void sortList() {
+    Node *newFront = head;
+    while (newFront->next) {
+      Node *smallest = newFront;
+      Node *current = newFront;
+      int minimum = INF;
+      while (current) {
+        if (current->data < minimum) {
+          smallest = current;
+          minimum = current->data;
         }
+        current = current->next;
+      }
+      smallest->data = newFront->data;
+      newFront->data = minimum;
+      newFront = newFront->next;
+    }
+    sorted = true;
+  }
+
+  /**
+   * Public : pushFront
+   *
+   * Description:
+   *      Pushes a number x at the front of the list
+   *
+   * Params:
+   *      int : number to be put in the list
+   *
+   * Returns:
+   *      void
+   */
+  void pushFront(int x) {
+    Node *tempPtr = new Node(x);
+
+    // empty list make head and tail
+    // point to new value
+    if (!head) {
+      head = tail = tempPtr;
+      // otherwise adjust head pointer
+    } else {
+      tempPtr->next = head;
+      head = tempPtr;
+    }
+    size++;
+  }
+
+  /**
+   * Public : pushFront
+   *
+   * Description:
+   *      this function will place a pre-existing linked list at the front of
+   * another linked list. Params:
+   *      - Vector :  list to be pushed at thr front of the another list
+   * Returns:
+   *      -void
+   */
+  void pushFront(const MyVector &other) {
+    Node *otherPtr = other.head;         // get copy of other lists head
+    int *tempData = new int[other.size]; // allocate memory to hold values
+
+    // load other list into array
+    int i = 0;
+    while (otherPtr) {
+      tempData[i] = otherPtr->data;
+      otherPtr = otherPtr->next;
+      ++i;
     }
 
-    /**
-     * @brief Overloaded Constructor 
-     * 
-     * @param string FileName - file to open and read
-     * 
-     * Assumes infile will contain numbers only delimited by spaces or 
-     * new lines.
-     */
-    MyVector(string FileName) {
-        init();
+    // process list in reverse in order to keep them
+    // in their original order.
+    for (int i = other.size - 1; i >= 0; i--) {
+      pushFront(tempData[i]);
+    }
+  }
 
-        ifstream fin;
-        int      x = 0;
+  /**
+   * Public : pushRear
+   *
+   * Description:
+   *      Pushes a number x at the back of the list
+   *
+   * Params:
+   *      int : number to be put in the list
+   *
+   * Returns:
+   *      void
+   */
+  void pushRear(int x) {
+    Node *tempPtr = new Node(x);
 
-        fin.open(FileName);
-        while (!fin.eof()) {
-            fin >> x;
-            pushRear(x);
-        }
+    if (!head) {
+      head = tail = tempPtr;
+    } else {
+      tail->next = tempPtr;
+      tail = tempPtr;
+    }
+    size++; // add to size of list
+  }
+
+  /**
+   * Public : pushRear
+   *
+   * Description:
+   *      this function will place a pre-existing linked list at the back of
+   * another linked list. Params:
+   *      - Vector :  list to be pushed at thr front of the another list
+   * Returns:
+   *      -void
+   */
+
+  void pushRear(const MyVector &other) {
+    Node *otherPtr = other.head; // get copy of other lists head
+
+    while (otherPtr) { // traverse and add
+      pushRear(otherPtr->data);
+      otherPtr = otherPtr->next;
+    }
+  }
+
+  /**
+   * Public : pushAt
+   *
+   * Description:
+   *            The method pushes a value at given index.
+   *
+   * Params:
+   *      int     : index of the list
+   *      int     : value to be inserted in the list
+   *
+   * Returns:
+   *      bool    : returns true if inserted else false.
+   */
+
+  bool pushAt(int i, int num) {
+    if (i >= size) {
+      return false;
     }
 
-    /**
-     * @brief Copy Constructor 
-     * 
-     * @param MyVector &other 
-     */
-    MyVector(const MyVector& other) {
-        init();
+    Node *tempPtr = new Node(num); // allocate new node
+    Node *prev = head;             // get previous and next pointers
+    Node *curr = head;
 
-        Node* temp = other.head;
-
-        while (temp) {
-            pushRear(temp->data);
-            temp = temp->next;
-        }
+    while (i > 0) { // loop to find proper location
+      prev = curr;
+      curr = curr->next;
+      i--;
     }
 
-    /**
-     * @brief - Initialize the data members so we don't
-     *      have duplicate lines in each constructor.
-     * 
-     */
-    void init() {
-        head = tail = NULL;
-        fileName = "";
-        size = 0;
-        sorted = 0;
+    tempPtr->next = prev->next; // add new node in its proper position
+    prev->next = tempPtr;
+
+    size++; // add to size :)
+    return true;
+  }
+
+  /**
+   * Public : popFront
+   *
+   * Description:
+   *            The method removes a value from the front of the list.
+   *
+   * Params:
+   *       none
+   *
+   * Returns:
+   *      int     : returns the removed data
+   */
+
+  int popFront() {
+    if (head == nullptr) { // If the list is empty, return -1
+      return -1;
+    }
+    int removedData = head->data;
+    head = head->next;
+    return removedData; // Otherwise return the popped node's data.
+  }
+
+  /**
+   * Public : popRear
+   *
+   * Description:
+   *            The method removes a value from the rear of the list.
+   *
+   * Params:
+   *      none
+   *
+   * Returns:
+   *      int    : returns the removed data otherwise returns -1
+   */
+
+  int popRear() {
+    int hold;
+
+    if (head) {
+
+      Node *traverse = head;
+      Node *prev = NULL;
+      while (traverse->next != NULL) {
+        prev = traverse;
+        traverse = traverse->next;
+      }
+
+      hold = traverse->data;
+      delete traverse;
+      traverse = NULL;
+      prev->next = NULL;
+      size -= 1;
+
+      return hold;
     }
 
+    else {
 
-    /**
-     * @brief Public version of inOrder push.
-     * 
-     * @param x 
-     */
-    void inorderPush(int x) {
-        if (!sorted) {
-            sortList();
-        }
+      return -1;
+    }
+  }
 
-        if (!head) {
-            pushFront(x);  // call push front for empty list (or pushRear would work)
-        } else if (x < head->data) {
-            pushFront(x);  // call push front if x is less than head
-        } else if (x > tail->data) {
-            pushRear(x);  // call push rear if x > tail
-        } else {
-            _inorderPush(x);  // call private version of push in order
-        }
+  /**
+   * Public : popAt
+   *
+   * Description:
+   *            The method removes a value from specified location of the list.
+   *
+   * Params:
+   *      int    : index or location of the node to be removed.
+   *
+   * Returns:
+   *      int    : returns the removed data otherwise returns -1
+   */
+
+  int popAt(int loc) {
+    int val = 0;
+
+    if (loc == 0)
+      return popFront();
+
+    else if (head == NULL) {
+      cout << "no items";
+      return 0;
     }
 
-    /**
-     * @brief Sort the current values in the linked list.
-     * 
-     * @returns None
-     */
-    void sortList() {
-        Node* newFront = head;
-        while (newFront->next) {
-            Node* smallest = newFront;
-            Node* current = newFront;
-            int   minimum = INF;
-            while (current) {
-                if (current->data < minimum) {
-                    smallest = current;
-                    minimum = current->data;
-                }
-                current = current->next;
-            }
-            smallest->data = newFront->data;
-            newFront->data = minimum;
-            newFront = newFront->next;
-        }
-        sorted = true;
+    else {
+      Node *traverse = head;
+      for (int i = 0; i < (loc - 1); i++) {
+
+        traverse = traverse->next;
+      }
+
+      if (traverse->next == NULL)
+        return popRear();
+
+      else {
+
+        Node *temp = traverse->next;
+        traverse->next = traverse->next->next;
+        val = temp->data;
+
+        delete temp;
+        size -= 1;
+        return val;
+      }
     }
+  }
+  /**
+   * Public : find
+   *
+   * Description:
+   *            The method finds the location of the value entered by the user.
+   *
+   * Params:
+   *      int    : value to be searched
+   *
+   * Returns:
+   *      int    : returns the location of the value to be removed.
+   */
 
-    /**
-     * @brief Add value to front of list.
-     * 
-     * @param x 
-     */
-    void pushFront(int x) {
-        Node* tempPtr = new Node(x);
-
-        // empty list make head and tail
-        // point to new value
-        if (!head) {
-            head = tail = tempPtr;
-            // otherwise adjust head pointer
-        } else {
-            tempPtr->next = head;
-            head = tempPtr;
-        }
-        size++;
+  int find(int val) {
+    // If list is empty, return -1
+    if (head == nullptr) {
+      return -1;
     }
-
-    /**
-     * @brief This method loads values from 'other' list in 'this' list.
-     *          It loads an array first so we can process the values in
-     *          reverse so they end up on 'this' list in the proper order.
-     *          If we didn't use the array, we would reverse the values
-     *          from the 'other' list.
-     * 
-     * @depends - Uses `pushFront(int)`
-     * @param MyVector& other 
-     * @return None
-     */
-    void pushFront(const MyVector& other) {
-        Node* otherPtr = other.head;           // get copy of other lists head
-        int*  tempData = new int[other.size];  // allocate memory to hold values
-
-        // load other list into array
-        int i = 0;
-        while (otherPtr) {
-            tempData[i] = otherPtr->data;
-            otherPtr = otherPtr->next;
-            ++i;
-        }
-
-        // process list in reverse in order to keep them
-        // in their original order.
-        for (int i = other.size - 1; i >= 0; i--) {
-            pushFront(tempData[i]);
-        }
+    Node *travel = head;
+    int index = 0;
+    while (travel) {
+      if (travel->data == val) {
+        // If the value matches the current node's data, return the node index
+        return index;
+      } else {
+        travel = travel->next;
+        index++;
+      }
     }
+    // If value was not found in the linked list, return -1
+    return -1;
+  }
 
-    /**
-     * @brief -  Add 'other' list's values to end of 'this' list.
-     * @note - Uses `pushRear(int)`
-     * @param MyVector& other 
-     * @return None
-     */
-    void pushRear(const MyVector& other) {
-        Node* otherPtr = other.head;  // get copy of other lists head
+  /**
+   * Public : overload operator <<
+   *
+   * Description:
+   *       prints MyVector without using a print function.
+   *
+   *
+   * Returns:
+   *       os
+   *
+   */
 
-        while (otherPtr) {  // traverse and add
-            pushRear(otherPtr->data);
-            otherPtr = otherPtr->next;
-        }
+  friend ostream &operator<<(ostream &os, const MyVector &rhs) {
+    Node *temp = rhs.head; // temp pointer copies head
+
+    while (temp) { // this loops until temp is NULL
+
+      os << temp->data; // print data from Node
+      if (temp->next) {
+        os << "->";
+      }
+      temp = temp->next; // move to next Node
     }
+    os << endl;
+    return os;
+  }
+  /**
+   * Public : overload operator <<
+   *
+   * Description:
+   *       prints MyVector to output file
+   *       without using a print function.
+   *
+   *
+   * Returns:
+   *       of
+   *
+   */
 
-    /**
-     * @brief Push value onto list at soecified position, if it exists.
-     * 
-     * @param int i - location index 
-     * @param inr x - value to add 
-     * @return bool - true add successful / false add failed 
-     */
-    bool pushAt(int i, int x) {
-        if(i >= size){
-            return false;
-        }
-        
-        Node* tempPtr = new Node(x);  // allocate new node
-        Node* prev = head;            // get previous and next pointers
-        Node* curr = head;
+  friend ofstream &operator<<(ofstream &of, const MyVector &rhs) {
+    Node *temp = rhs.head; // temp pointer copies head
 
-        while (i>0) {  // loop to find proper location
-            prev = curr;
-            curr = curr->next;
-            i--;
-        }
+    while (temp) { // this loops until temp is NULL
 
-        tempPtr->next = prev->next;  // add new node in its proper position
-        prev->next = tempPtr;
-
-        size++;  // add to size :)
-        return true;
+      of << temp->data; // print data from Node
+      if (temp->next) {
+        of << "->";
+      }
+      temp = temp->next; // move to next Node
     }
+    of << endl;
+    return of;
+  }
 
-    /**
-     * @brief - Add value to rear of list
-     * 
-     * @param int x - value to be added 
-     * @return None
-     */
-    void pushRear(int x) {
-        Node* tempPtr = new Node(x);
+  /**
+   * Public : overload operator []
+   *
+   * Description:
+   *    makes MyVector to behave like an array
+   *    Values in MyVector can be called using index just like an
+   *     array
+   *
+   * Returns:
+   *       int
+   *
+   */
 
-        if (!head) {
-            head = tail = tempPtr;
+  int &operator[](int location) {
+    Node *temp = _Find(location);
 
-        } else {
-            tail->next = tempPtr;
-            tail = tempPtr;
-        }
-        size++;  // add to size of list
+    return temp->data;
+  }
+
+  /**
+   * Public : overload operator +
+   *
+   * Description:
+   *      adds MyVector to another vector
+   *
+   *
+   * Returns:
+   *     V : Sum of two vectors
+   *
+   */
+
+  MyVector operator+(const MyVector &rhs) {
+    MyVector V;
+    Node *a = this->head;
+    Node *b = rhs.head;
+    while (a && b) {
+      V.pushRear(a->data + b->data);
+      a = a->next;
+      b = b->next;
     }
-
-    friend ostream& operator<<(ostream& os, const MyVector& rhs) {
-        Node* temp = rhs.head;  // temp pointer copies head
-
-        while (temp) {  // this loops until temp is NULL
-                        // same as `while(temp != NULL)`
-
-            os << temp->data;  // print data from Node
-            if (temp->next) {
-                os << "->";
-            }
-            temp = temp->next;  // move to next Node
-        }
-        os << endl;
-        return os;
+    if (a) {
+      while (a) {
+        V.pushRear(a->data);
+        a = a->next;
+      }
+    } else if (b) {
+      while (b) {
+        V.pushRear(b->data);
+        b = b->next;
+      }
     }
+    return V;
+  }
 
-    /**
-     * @brief Destroy the My Vector object
-     * 
-     */
-    ~MyVector() {
-        Node* curr = head;
-        Node* prev = head;
+  /**
+   * Public : overload operator -
+   *
+   * Description:
+   *      subtracts two vectors
+   *      The vector whose length is shorter is subtracted
+   *       from the longer vector
+   * Returns:
+   *     V1 :  difference of two vectors
+   *
+   */
 
-        while(curr){
-            prev = curr;
-            curr = curr->next;
-            cout << "deleting: " << prev->data << endl;
-            delete prev;
-        }
+  MyVector operator-(const MyVector &rhs) {
+    MyVector V1;
+    Node *a = this->head;
+    Node *b = rhs.head;
+    while (a && b) {
+      V1.pushRear(a->data - b->data);
+      a = a->next;
+      b = b->next;
     }
+    if (a) {
+      while (a) {
+        V1.pushRear(a->data);
+        a = a->next;
+      }
+    } else if (b) {
+      while (b) {
+        V1.pushRear(b->data);
+        b = b->next;
+      }
+    }
+    return V1;
+  }
 
+  /**
+   * Public : overload operator =
+   *
+   * Description:
+   *      assigns one vector to another
+   * Returns:
+   *     none
+   *
+   */
 
+  void operator=(const MyVector &rhs) {
+    if (rhs.head == nullptr) {
+      head = tail = nullptr;
+    } else {
+      this->head = rhs.head;
+      this->tail = rhs.tail;
+    }
+  }
 
+  /**
+   * Public : overload operator ==
+   *
+   * Description:
+   *      checks the equality of two vectors
+   * Returns:
+   *     bool : true if they are equal false otherwise
+   *
+   */
+
+  friend bool operator==(const MyVector &lhs, const MyVector &rhs) {
+    Node *a = lhs.head;
+    Node *b = rhs.head;
+    while (a && b) {
+      if (a->data != b->data) {
+        return false;
+      }
+      a = a->next;
+      b = b->next;
+    }
+    if ((a && !b) || (b && !a)) {
+      return false;
+    }
+    return true;
+  }
 };
 
-//ofstream MyVector::fout;
+void printName(ostream &outputfile) {
+  outputfile << "Panta\n03/01/2023\nSpring 2143\n" << endl;
+}
 
 int main() {
-    MyVector V1;
+  int a1[] = {8,7,2,9,4};
+  int a2[] = {10, 20, 30};
 
-    V1.pushFront(56);
-    V1.pushFront(42);
-    V1.pushFront(30);
-    V1.pushFront(48);
+  MyVector v1(a1, 5);
+  MyVector v2(a2, 3);
 
-    V1.pushFront(V1);
+   ofstream outputfile;
+  outputfile.open("output.txt");
+    printName(outputfile);
 
-    cout << V1 << endl;
+    cout << v1[2] << endl;
+  outputfile << v1[2] << endl;
+  // writes out 3
 
+  v1[4] = 9;
+  // v1 now = [1,2,3,4,9]
 
-    V1.sortList();
-    cout << V1 << endl;
+  cout << v1 << endl;
+  // writes out [1,2,3,4,9] to console.
 
-    V1.pushAt(3, 88);
-    cout << V1 << endl;
-    V1.sortList();
-    cout << V1 << endl;
-    V1.~MyVector();
+  outputfile << v1 << endl;
+  // writes out [1,2,3,4,9] to your output file.
+
+   MyVector v3 = v1 + v2;
+  cout << v3 << endl;
+  outputfile << v3 << endl;
+  // writes out [9,18,27,4,9] to console.
 }
