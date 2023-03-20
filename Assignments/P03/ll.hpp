@@ -1,7 +1,7 @@
 /*****************************************************************
  *
  *  Author:           Aashish Panta
- *  Email:            raysudhir30@gmail.com
+ *  Email:            apanta0525@gmail.com
  *  Label:            P03
  *  Title:            Graphiz
  *  Course:           CMPS 2143
