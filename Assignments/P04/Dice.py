@@ -39,5 +39,22 @@ class Dice:
             rolls -= 1
         return total
 
+def avgRoll():
+    sum = 0
+    for i in range(len(dice)):
+        value = dice[i].roll()
+        sum += value
+    avg = sum // len(dice)
+    return avg
+
+
+def maxRoll():
+    max = 0
+    for i in range(len(dice)):
+        value = dice[i].roll()
+        if value >= max:
+            max = value
+    return max
+
     def __repr__(self):
         return "".join([str(die) for die in self.dice])
