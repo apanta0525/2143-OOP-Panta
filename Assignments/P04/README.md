@@ -15,7 +15,7 @@ This program implements Die & Dice classes in Python, using the c++ code as a te
 
 ### Instructions
 
--None for now.
+- This program does not require any non standard libraries.
 
 ### Example Command
 
