@@ -20,7 +20,7 @@ There are UML diagrams for the Classes in the Program.
 | 9 | [README.md](https://github.com/apanta0525/2143-OOP-Panta/blob/main/Assignments/A05/README.md) | README.md file |
 | 10 | [Spell.JPG](https://github.com/apanta0525/2143-OOP-Panta/blob/main/Assignments/A05/Spell.JPG) | Spell Class Diagram |
 | 11 | [Weapon.JPG](https://github.com/apanta0525/2143-OOP-Panta/blob/main/Assignments/A05/Weapon.JPG) | Weapon Class Diagram |
-| 12 | [Spell.JPG](https://github.com/apanta0525/2143-OOP-Panta/blob/main/Assignments/A05/mainDiagram.JPG) | mainDiagram Class Diagram |
+| 12 | [mainDiagram.JPG](https://github.com/apanta0525/2143-OOP-Panta/blob/main/Assignments/A05/mainDiagram.JPG) | mainDiagram Class Diagram |
 
 
 ### Instructions
